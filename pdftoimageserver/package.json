@@ -1,0 +1,31 @@
+{
+  "name": "pdftoimage",
+  "version": "1.0.0",
+  "description": "API to convert pdf to image",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "pdftoimage"
+  },
+  "keywords": [
+    "pdf",
+    "converter",
+    "image"
+  ],
+  "author": "Amit",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "express-fileupload": "^1.1.1-alpha.1",
+    "mongodb": "^2.2.16",
+    "pdf-image": "^2.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  }
+}
