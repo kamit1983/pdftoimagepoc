@@ -23,7 +23,10 @@
     "express": "^4.16.4",
     "express-fileupload": "^1.1.1-alpha.1",
     "mongodb": "^2.2.16",
-    "pdf-image": "^2.0.0"
+    "pdf-image": "^2.0.0",
+    "pdfjs-dist": "^2.0.943",
+    "puppeteer": "^1.11.0",
+    "puppeteer-core": "^1.11.0"
   },
   "devDependencies": {
     "nodemon": "^1.18.9"

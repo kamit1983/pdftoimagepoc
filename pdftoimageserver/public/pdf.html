@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Pdftoimageclient</title>
+  <base href="/">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+  <script src="http://localhost:8000/public/pdf.js"></script>
+  <script src="http://localhost:8000/public/pdf.worker.js"></script>
+</head>
+<body>
+    <!-- <canvas id="pdf-canvas"></canvas> -->
+    <script>
+
+      var __PDF_DOC,
+        __CURRENT_PAGE,
+        __TOTAL_PAGES,
+        __PAGE_RENDERING_IN_PROGRESS = 0;
+        
+      
+      function showPDF(pdf_url) {
+        pdf_url = "http://localhost:8000/tmp/input.pdf";
+        PDFJS.getDocument({ url: pdf_url }).then( async function(pdf_doc) {
+          __PDF_DOC = pdf_doc;
+          __TOTAL_PAGES = __PDF_DOC.numPages;
+           
+            for(let i=1; i<= __TOTAL_PAGES ; i++){
+            	// Fetch the page
+              const page = await __PDF_DOC.getPage(i);
+              $('<canvas />', { id: `pdf-canvas${i}` }).appendTo('body');
+              __CANVAS = $(`#pdf-canvas${i}`).get(0),
+              __CANVAS_CTX = __CANVAS.getContext('2d');
+              // As the canvas is of a fixed width we need to set the scale of the viewport accordingly
+              var scale_required = __CANVAS.width / page.getViewport(1).width;
+
+              // Get viewport of the page at required scale
+              var viewport = page.getViewport(scale_required);
+
+              // Set canvas height
+              __CANVAS.height = viewport.height;
+
+              var renderContext = {
+                canvasContext: __CANVAS_CTX,
+                viewport: viewport
+              };
+              
+              // Render the page contents in the canvas
+              page.render(renderContext).then(function() {
+                __PAGE_RENDERING_IN_PROGRESS = 0;
+              });
+            }
+      
+          // Show the first page
+          //showPage(1);
+        }).catch(function(error) {
+          alert(error.message);
+        });;
+      }
+      function getUrl(){
+        let data = [];
+        for(let i=1; i<= __TOTAL_PAGES ; i++){
+          data.push($(`#pdf-canvas${i}`).get(0).toDataURL());
+        }
+        return data;
+      }
+      </script>
+</body>
+</html>
