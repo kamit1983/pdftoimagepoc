@@ -40,9 +40,7 @@
               const browser = await puppeteer.launch({executablePath: '../../chrome-mac/Chromium.app/Contents/MacOS/Chromium'});
               const page = await browser.newPage();
               await page.goto('http://localhost:8000/public/pdf.html');
-              await page.evaluate(() => showPDF())
-              await page.waitFor(1000);
-              const imageUrls = await page.evaluate(() => getUrl());
+              const imageUrls = await page.evaluate(() => showPDF())
               const urls = download(imageUrls,`${file.name.split('.')[0]}`);
               console.log(urls);
               await browser.close();

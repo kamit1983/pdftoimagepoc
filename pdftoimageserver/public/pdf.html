@@ -20,9 +20,10 @@
         __PAGE_RENDERING_IN_PROGRESS = 0;
         
       
-      function showPDF(pdf_url) {
+      async function showPDF(pdf_url) {
+        let data = [];
         pdf_url = "http://localhost:8000/tmp/input.pdf";
-        PDFJS.getDocument({ url: pdf_url }).then( async function(pdf_doc) {
+         const pdf_doc = await PDFJS.getDocument({ url: pdf_url });
           __PDF_DOC = pdf_doc;
           __TOTAL_PAGES = __PDF_DOC.numPages;
            
@@ -47,23 +48,11 @@
               };
               
               // Render the page contents in the canvas
-              page.render(renderContext).then(function() {
-                __PAGE_RENDERING_IN_PROGRESS = 0;
-              });
+              await page.render(renderContext)
+              data.push($(`#pdf-canvas${i}`).get(0).toDataURL());
             }
-      
-          // Show the first page
-          //showPage(1);
-        }).catch(function(error) {
-          alert(error.message);
-        });;
-      }
-      function getUrl(){
-        let data = [];
-        for(let i=1; i<= __TOTAL_PAGES ; i++){
-          data.push($(`#pdf-canvas${i}`).get(0).toDataURL());
-        }
-        return data;
+            return data;
+          
       }
       </script>
 </body>
