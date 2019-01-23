@@ -36,6 +36,7 @@
           function convert(){
             const puppeteer = require('puppeteer');
             (async () => {
+              //https://download-chromium.appspot.com/
               const browser = await puppeteer.launch({executablePath: '../../chrome-mac/Chromium.app/Contents/MacOS/Chromium'});
               const page = await browser.newPage();
               await page.goto('http://localhost:8000/public/pdf.html');
