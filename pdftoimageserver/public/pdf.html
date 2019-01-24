@@ -4,56 +4,12 @@
   <meta charset="utf-8">
   <title>Pdftoimageclient</title>
   <base href="/">
-
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
   <script src="http://localhost:8000/public/pdf.js"></script>
   <script src="http://localhost:8000/public/pdf.worker.js"></script>
 </head>
 <body>
-    <!-- <canvas id="pdf-canvas"></canvas> -->
-    <script>
-
-      var __PDF_DOC,
-        __CURRENT_PAGE,
-        __TOTAL_PAGES,
-        __PAGE_RENDERING_IN_PROGRESS = 0;
-        
-      
-      async function showPDF(pdf_url) {
-        let data = [];
-        pdf_url = "http://localhost:8000/tmp/input.pdf";
-         const pdf_doc = await PDFJS.getDocument({ url: pdf_url });
-          __PDF_DOC = pdf_doc;
-          __TOTAL_PAGES = __PDF_DOC.numPages;
-           
-            for(let i=1; i<= __TOTAL_PAGES ; i++){
-            	// Fetch the page
-              const page = await __PDF_DOC.getPage(i);
-              $('<canvas />', { id: `pdf-canvas${i}` }).appendTo('body');
-              __CANVAS = $(`#pdf-canvas${i}`).get(0),
-              __CANVAS_CTX = __CANVAS.getContext('2d');
-              // As the canvas is of a fixed width we need to set the scale of the viewport accordingly
-              var scale_required = __CANVAS.width / page.getViewport(1).width;
-
-              // Get viewport of the page at required scale
-              var viewport = page.getViewport(scale_required);
-
-              // Set canvas height
-              __CANVAS.height = viewport.height;
-
-              var renderContext = {
-                canvasContext: __CANVAS_CTX,
-                viewport: viewport
-              };
-              
-              // Render the page contents in the canvas
-              await page.render(renderContext)
-              data.push($(`#pdf-canvas${i}`).get(0).toDataURL());
-            }
-            return data;
-          
-      }
-      </script>
+   
 </body>
 </html>
