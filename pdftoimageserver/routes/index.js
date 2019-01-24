@@ -11,9 +11,9 @@
       });
       app.post('/pdftoimage', (req, res)=>{
           let file = req.files.file;
-          //let path = `./tmp/${file.name}`;
-          let pathurl = `http://localhost:8000/tmp/${file.name}`;
-          let path = `./tmp/input.pdf`;
+          let path = `./tmp/${file.name}`;
+          let pdf_url = `http://localhost:8000/tmp/${file.name}`;
+          //let path = `./tmp/input.pdf`;
           file.mv(path, err=>{
             if(err){
               res.send(err);
@@ -43,7 +43,7 @@
               //console.log('html',html);
               //await page.setContent(`data:text/html,${html}`,{ waitUntil: 'networkidle2' });
 
-              let pdf_url = "http://localhost:8000/tmp/input.pdf";
+              //let pdf_url = "http://localhost:8000/tmp/input.pdf";
               const imageUrls = await page.evaluate(async ({pdf_url}) => {
                 let data = [];
                  
