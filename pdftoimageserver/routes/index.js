@@ -1,7 +1,8 @@
 
 (function IIFE() {
     'use strict';
-  
+    const usePdfjs = true;
+    const fs = require("fs");
     module.exports = function(app) {
       app.use(function(req, res, next) {
         res.setHeader('Access-Control-Allow-Origin', '*');
@@ -11,39 +12,32 @@
       });
       app.post('/pdftoimage', (req, res)=>{
           let file = req.files.file;
+          //path to save the pdf file
           let path = `./tmp/${file.name}`;
+          //url of the pdf file to load in PDFJS document
           let pdf_url = `http://localhost:8000/tmp/${file.name}`;
-          //let path = `./tmp/input.pdf`;
+          //save file to file syatem
           file.mv(path, err=>{
             if(err){
               res.send(err);
             }else{
-              // var PDFImage = require("pdf-image").PDFImage;
-              // var pdfImage = new PDFImage(path);
-              // console.log(pdfImage);
-              // pdfImage.convertFile().then(function (imagePaths) {
-              //   //console.log('imagePath:',imagePath);
-              //   // 0-th page (first page) of the slide.pdf is available as slide-0.png
-                
-              //   res.send(imagePaths.join());
-              // }).catch(err=>{
-              //   console.log(err);
-              //   res.send(err);
-              // });
-              convert();
+              if(usePdfjs){
+                //method using PDFJS
+                convertUsingPdfjs();
+              }else{
+                //method using ImageMagick
+                convertUsingImageMagick();
+              }
             }
           })
-          function convert(){
+          function convertUsingPdfjs(){
             const puppeteer = require('puppeteer');
             (async () => {
               //https://download-chromium.appspot.com/
               const browser = await puppeteer.launch({executablePath: '../../chrome-mac/Chromium.app/Contents/MacOS/Chromium'});
               const page = await browser.newPage();
               await page.goto('http://localhost:8000/public/pdf.html');
-              //console.log('html',html);
-              //await page.setContent(`data:text/html,${html}`,{ waitUntil: 'networkidle2' });
 
-              //let pdf_url = "http://localhost:8000/tmp/input.pdf";
               const imageUrls = await page.evaluate(async ({pdf_url}) => {
                 let data = [];
                  
@@ -84,7 +78,20 @@
             })();
           
           }
-          const fs = require("fs");
+          function convertUsingImageMagick(){
+              var PDFImage = require("pdf-image").PDFImage;
+              var pdfImage = new PDFImage(path);
+              pdfImage.convertFile().then(function (imagePaths) {
+                //console.log('imagePath:',imagePath);
+                // 0-th page (first page) of the slide.pdf is available as slide-0.png
+                
+                res.send(imagePaths.join());
+              }).catch(err=>{
+                console.log(err);
+                res.send(err);
+              });
+          }
+          
           //  This is main download function which takes the url of your image
           function download(imageUrls, filename) {
             let urls = [];
@@ -95,21 +102,6 @@
             }
             return urls;
           }
-          var html = `<!doctype html>
-          <html lang="en">
-          <head>
-            <meta charset="utf-8">
-            <title>Pdftoimageclient</title>
-            <base href="/">
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-            <script src="http://localhost:8000/public/pdf.js"></script>
-            <script src="http://localhost:8000/public/pdf.worker.js"></script>
-          </head>
-          <body>
-             
-          </body>
-          </html>`;
       });
     };
   })();
