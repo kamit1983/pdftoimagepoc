@@ -15,21 +15,10 @@
           //path to save the pdf file
           let path = `./tmp/${file.name}`;
           //url of the pdf file to load in PDFJS document
-          let pdf_url = `http://localhost:8000/tmp/${file.name}`;
-          //save file to file syatem
-          file.mv(path, err=>{
-            if(err){
-              res.send(err);
-            }else{
-              if(usePdfjs){
-                //method using PDFJS
-                convertUsingPdfjs();
-              }else{
-                //method using ImageMagick
-                convertUsingImageMagick();
-              }
-            }
-          })
+         
+          let binary_data = file.data.toString('binary');;
+          console.log(binary_data);
+          convertUsingPdfjs();
           function convertUsingPdfjs(){
             const puppeteer = require('puppeteer');
             (async () => {
@@ -38,10 +27,10 @@
               const page = await browser.newPage();
               await page.goto('http://localhost:8000/public/pdf.html');
 
-              const imageUrls = await page.evaluate(async ({pdf_url}) => {
+              const imageUrls = await page.evaluate(async ({binary_data}) => {
                 let data = [];
                  
-                  const pdf_doc = await PDFJS.getDocument({ url: pdf_url });
+                  const pdf_doc = await PDFJS.getDocument({ data: binary_data });
                     var __PDF_DOC = pdf_doc;
                     var __TOTAL_PAGES = __PDF_DOC.numPages;
                     
@@ -70,7 +59,7 @@
                         data.push($(`#pdf-canvas${i}`).get(0).toDataURL());
                       }
                       return data;
-              },{pdf_url});
+              },{binary_data});
               const urls = download(imageUrls,`${file.name.split('.')[0]}`);
               console.log(urls);
               await browser.close();
