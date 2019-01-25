@@ -3,6 +3,21 @@
     'use strict';
     const usePdfjs = true;
     const fs = require("fs");
+    var html = `<!doctype html>
+    <html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <title>Pdftoimageclient</title>
+      <base href="/">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+      <script src="http://localhost:8000/public/pdf.js"></script>
+      <script src="http://localhost:8000/public/pdf.worker.js"></script>
+    </head>
+    <body>
+       
+    </body>
+    </html>`;
     module.exports = function(app) {
       app.use(function(req, res, next) {
         res.setHeader('Access-Control-Allow-Origin', '*');
@@ -17,7 +32,7 @@
           //url of the pdf file to load in PDFJS document
          
           let binary_data = file.data.toString('binary');;
-          console.log(binary_data);
+
           convertUsingPdfjs();
           function convertUsingPdfjs(){
             const puppeteer = require('puppeteer');
@@ -25,7 +40,9 @@
               //https://download-chromium.appspot.com/
               const browser = await puppeteer.launch({executablePath: '../../chrome-mac/Chromium.app/Contents/MacOS/Chromium'});
               const page = await browser.newPage();
-              await page.goto('http://localhost:8000/public/pdf.html');
+              //await page.goto('http://localhost:8000/public/pdf.html');
+              await page.goto(`data:text/html,${html}`, { waitUntil: 'networkidle0' });
+
 
               const imageUrls = await page.evaluate(async ({binary_data}) => {
                 let data = [];
