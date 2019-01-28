@@ -11,9 +11,9 @@
       <base href="/">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-      <script src="http://localhost:8000/public/pdf.js"></script>
-      <script src="http://localhost:8000/public/pdf.worker.js"></script>
-    </head>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.0.943/pdf.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.0.943/pdf.worker.js"></script>
+      </head>
     <body>
        
     </body>
@@ -47,7 +47,7 @@
               const imageUrls = await page.evaluate(async ({binary_data}) => {
                 let data = [];
                  
-                  const pdf_doc = await PDFJS.getDocument({ data: binary_data });
+                  const pdf_doc = await pdfjsLib.getDocument({ data: binary_data });
                     var __PDF_DOC = pdf_doc;
                     var __TOTAL_PAGES = __PDF_DOC.numPages;
                     
