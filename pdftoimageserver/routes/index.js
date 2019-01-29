@@ -4,20 +4,15 @@
     const usePdfjs = true;
     const fs = require("fs");
     var html = `<!doctype html>
-    <html lang="en">
-    <head>
-      <meta charset="utf-8">
-      <title>Pdftoimageclient</title>
-      <base href="/">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.0.943/pdf.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.0.943/pdf.worker.js"></script>
-      </head>
-    <body>
-       
-    </body>
-    </html>`;
+                  <html lang="en">
+                  <head>
+                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.0.943/pdf.js"></script>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.0.943/pdf.worker.js"></script>
+                  </head>
+                  <body>
+                  </body>
+                </html>`;
     module.exports = function(app) {
       app.use(function(req, res, next) {
         res.setHeader('Access-Control-Allow-Origin', '*');
