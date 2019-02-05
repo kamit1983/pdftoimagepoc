@@ -105,7 +105,12 @@
           }
       });
       app.post('/upload',(req, res)=>{
-        console.log(req.files || req.file);
+        console.log(req.files.uploads);
+        for(let i=0; i<req.files.uploads.length;i++){
+          req.files.uploads[i].mv(`./tmp/${req.files.uploads[i].name}`,(err,f)=>{
+            console.log(err || f);
+          })
+        }
         res.send({mess:'upload'});
       });
     };
