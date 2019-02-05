@@ -4,7 +4,7 @@
     POC for PDF to Image conversion: Just upload a pdf and have them converted to image below!!
   </h1>
 </div>
-<p-fileUpload name="file" accept=".pdf" [url]="url" (onUpload)="onBasicUpload($event)" auto="auto"></p-fileUpload>
+<p-fileUpload name="file" accept=".pdf" customUpload="true" (uploadHandler)="myUploader($event)"  auto="auto"></p-fileUpload>
 <div *ngFor="let image of images;let i = index">
   <h4>Page-{{i}}</h4>: {{base}}{{image}} <br />
   <img  [src]="base + image" style="border: 1px solid red; margin:10px"/>

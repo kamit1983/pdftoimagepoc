@@ -104,5 +104,9 @@
             return urls;
           }
       });
+      app.post('/upload',(req, res)=>{
+        console.log(req.files || req.file);
+        res.send({mess:'upload'});
+      });
     };
   })();
